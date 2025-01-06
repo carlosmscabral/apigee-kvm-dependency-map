@@ -33,9 +33,9 @@ TOKEN=$(gcloud auth print-access-token)
 gcloud config set project "$APIGEE_PROJECT_ID"
 
 echo "Listing KVMs for Env $APIGEE_KVM_ENV ..."
-KVMS=$(apigeecli kvms list -e $APIGEE_KVM_ENV -o $APIGEE_PROJECT_ID -t $TOKEN)
+KVM_LIST=$(apigeecli kvms list -e $APIGEE_KVM_ENV -o $APIGEE_PROJECT_ID -t $TOKEN)
 echo "Found KVMs for Env $APIGEE_KVM_ENV :"
-echo $KVMS
+echo $KVM_LIST
 
 echo "Exporting proxies to local temporary folder ..."
 
@@ -73,4 +73,9 @@ for zipfile in *.zip; do
   echo "Extracted '$zipfile' into '$foldername'"
 done
 
-echo "Done"
+cd ../../
+echo "Done exporting proxies and sharedflows"
+
+echo "Finding dependencies..."
+
+python kvm_dependency_finder.py "$KVM_LIST" "./tmp/proxies"
