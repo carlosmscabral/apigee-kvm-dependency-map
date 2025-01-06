@@ -76,9 +76,14 @@ done
 cd ../../
 echo "Done exporting proxies and sharedflows"
 
-echo "Finding dependencies..."
+echo "DEPENDENCIES - PROXIES"
+echo "========================"
 
 python build-dependencies.py "$KVM_LIST" "./tmp/proxies"
+
+echo "DEPENDENCIES - SHARED FLOWS"
+echo "========================"
+
 python build-dependencies.py "$KVM_LIST" "./tmp/sharedflows"
 
 echo "Done!"
