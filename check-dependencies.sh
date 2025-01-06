@@ -39,10 +39,10 @@ echo $KVMS
 
 echo "Exporting proxies to local temporary folder ..."
 
-mkdir ./tmp/proxies
-mkdir ./tmp/sharedflows
+mkdir -p ./tmp/proxies
+mkdir -p ./tmp/sharedflows
 cd ./tmp/proxies
-apigeecli apis export -e $APIGEE_KVM_ENV -o $APIGEE_PROJECT_ID -t $TOKEN
+apigeecli apis export -o $APIGEE_PROJECT_ID -t $TOKEN
 
 for zipfile in *.zip; do
   # Extract the name without the .zip extension
@@ -58,7 +58,7 @@ for zipfile in *.zip; do
 done
 
 cd ../sharedflows/
-apigeecli sharedflows export -e $APIGEE_KVM_ENV -o $APIGEE_PROJECT_ID -t $TOKEN
+apigeecli sharedflows export  -o $APIGEE_PROJECT_ID -t $TOKEN
 
 for zipfile in *.zip; do
   # Extract the name without the .zip extension
