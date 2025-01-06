@@ -1,5 +1,3 @@
-import networkx as nx
-import matplotlib.pyplot as plt
 import os
 import json
 import sys
@@ -47,48 +45,6 @@ def find_kvm_dependencies(kvm_list_str, proxy_dir_path):
     return forward_dependencies, reverse_dependencies
 
 
-def create_dependency_graph(dependencies, graph_type="forward"):
-    """
-    Creates a NetworkX graph from the dependency data.
-
-    Args:
-        dependencies: A dictionary representing the dependencies.
-        graph_type: Either "forward" (proxy -> KVM) or "reverse" (KVM -> proxy).
-
-    Returns:
-        A NetworkX directed graph (DiGraph).
-    """
-    graph = nx.DiGraph()
-
-    if graph_type == "forward":
-        for proxy_name, kvm_names in dependencies.items():
-            for kvm_name in kvm_names:
-                graph.add_edge(proxy_name, kvm_name)  # Add edges from proxy to KVM
-    elif graph_type == "reverse":
-        for kvm_name, proxy_names in dependencies.items():
-            for proxy_name in proxy_names:
-                graph.add_edge(kvm_name, proxy_name)  # Add edges from KVM to proxy
-    else:
-        raise ValueError("Invalid graph_type. Must be 'forward' or 'reverse'")
-
-    return graph
-
-def draw_dependency_graph(graph, graph_type):
-    """
-    Draws and displays the dependency graph.
-    """
-    plt.figure(figsize=(12, 8))  # Adjust figure size as needed
-    plt.title(f"{graph_type.capitalize()} Dependencies")
-
-    # Use a layout algorithm for better visualization (e.g., spring_layout)
-    pos = nx.spring_layout(graph, k=0.5, iterations=50)  
-
-    nx.draw(graph, pos, with_labels=True, node_size=2000, node_color="skyblue",
-            font_size=10, font_weight="bold", arrowsize=20)
-
-    plt.tight_layout()
-    plt.show()
-
 if __name__ == "__main__":
     if len(sys.argv) != 3:
         print("Usage: python build-dependencies.py '<KVM_LIST>' <PROXY_DIR_PATH>")
@@ -99,10 +55,11 @@ if __name__ == "__main__":
 
     forward_deps, reverse_deps = find_kvm_dependencies(kvm_list_string, proxy_directory)
 
-    # Create and draw the forward dependency graph
-    forward_graph = create_dependency_graph(forward_deps, "forward")
-    draw_dependency_graph(forward_graph, "forward")
 
-    # Create and draw the reverse dependency graph
-    reverse_graph = create_dependency_graph(reverse_deps, "reverse")
-    draw_dependency_graph(reverse_graph, "reverse")
+    print("Forward Dependencies (Proxy --> KVMs):")
+    for proxy_name, kvm_names in forward_deps.items():
+        print(f"{proxy_name}: {', '.join(kvm_names)}")
+
+    print("\nReverse Dependencies (KVM --> Proxies):")
+    for kvm_name, proxy_names in reverse_deps.items():
+        print(f"{kvm_name}: {', '.join(proxy_names)}")

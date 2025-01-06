@@ -78,26 +78,7 @@ echo "Done exporting proxies and sharedflows"
 
 echo "Finding dependencies..."
 
-VENV_NAME="dependency_env"
-
-# Create a virtual environment if it doesn't exist
-if [ ! -d "$VENV_NAME" ]; then
-  echo "Creating virtual environment: $VENV_NAME"
-  python3 -m venv "$VENV_NAME"
-fi
-
-# Activate the virtual environment
-source "$VENV_NAME/bin/activate"
-
-# Install required packages from requirements.txt
-echo "Installing packages from requirements.txt"
-pip install -r requirements.txt
-
-
 python build-dependencies.py "$KVM_LIST" "./tmp/proxies"
 python build-dependencies.py "$KVM_LIST" "./tmp/sharedflows"
-
-echo "Deactivating virtual environment"
-deactivate
 
 echo "Done!"
