@@ -90,7 +90,13 @@ def draw_dependency_graph(graph, graph_type):
     plt.show()
 
 if __name__ == "__main__":
-    # ... (rest of your main block)
+    if len(sys.argv) != 3:
+        print("Usage: python build-dependencies.py '<KVM_LIST>' <PROXY_DIR_PATH>")
+        sys.exit(1)
+
+    kvm_list_string = sys.argv[1]
+    proxy_directory = sys.argv[2]
+
     forward_deps, reverse_deps = find_kvm_dependencies(kvm_list_string, proxy_directory)
 
     # Create and draw the forward dependency graph
