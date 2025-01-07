@@ -81,9 +81,18 @@ echo "========================"
 
 python build-dependencies.py "$KVM_LIST" "./tmp/proxies"
 
+echo ""
+echo ""
+
 echo "DEPENDENCIES - SHARED FLOWS"
 echo "========================"
 
 python build-dependencies.py "$KVM_LIST" "./tmp/sharedflows"
+
+echo ""
+echo ""
+echo "Cleaning temp folder..."
+
+rm -rf ./tmp/
 
 echo "Done!"
